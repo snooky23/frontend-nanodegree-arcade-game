@@ -17,11 +17,11 @@ Board.prototype.getYLocation = function(y) {
 
 Board.prototype.getXSlotSize = function() {
     return this.width / this.xslots;
-}
+};
 
 Board.prototype.getYSlotSize = function() {
     return this.height / this.yslots;
-}
+};
 
 
 // Enemies our player must avoid
@@ -32,6 +32,11 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.xLocation;
+    this.yLocation;
+    this.speed;
+
+    this.resetLocation();
 };
 
 // Update the enemy's position, required method for game
@@ -40,11 +45,21 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if(this.xLocation > 6) {
+        this.resetLocation();
+    }
+    this.xLocation = this.xLocation + this.speed * dt;
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), board.getYLocation(this.xLocation), board.getXLocation(this.yLocation) - 30);
+};
+
+Enemy.prototype.resetLocation = function() {
+    this.xLocation = -0.1;
+    this.yLocation = Math.floor(Math.random() * 3) + 1 ;
+    this.speed = Math.floor(Math.random() * 3) + 1 ;
 };
 
 // Now write your own player class
@@ -111,7 +126,8 @@ Player.prototype.handleInput = function(key) {
 var board = new Board();
 //create the player
 var player = new Player();
-
+//create enemies
+var allEnemies = [new Enemy() , new Enemy() ,new Enemy()];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
