@@ -55,12 +55,13 @@ var Player = function() {
     // Start location of the player
     this.xLocation = 2;
     this.yLocation = 5;
-    this.reset = false;
+    this.collision = false;
+    this.win = false;
 };
 
 Player.prototype.update = function() {
-    if(this.reset === true) {
-        this.reset = false;
+    if(this.collision === true || this.win === true) {
+        this.win = this.reset = false;
         this.xLocation = 2;
         this.yLocation = 5;
     }
@@ -70,7 +71,17 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), board.getYLocation(this.xLocation), board.getXLocation(this.yLocation) - 30);
 };
 
+Player.prototype.setLocation = function(x , y) {
+    this.xLocation = x;
+    this.yLocation = y;
+};
+
+Player.prototype.resetLocation = function() {
+    this.setLocation(2,5);
+};
+
 Player.prototype.handleInput = function(key) {
+    //console.log("x: " + this.xLocation + " y: " + this.yLocation);
     if(key === 'left') {
         if(this.xLocation > 0) {
             this.xLocation = this.xLocation - 1; 
@@ -78,6 +89,8 @@ Player.prototype.handleInput = function(key) {
     } else if (key === 'up') {
         if(this.yLocation > 1) {
             this.yLocation = this.yLocation - 1; 
+        } else if (this.yLocation === 1){
+            this.win = true;
         }
     } else if (key === 'right') {
         if(this.xLocation < 4) {
