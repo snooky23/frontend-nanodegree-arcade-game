@@ -70,12 +70,12 @@ var Player = function() {
     // Start location of the player
     this.xLocation = 2;
     this.yLocation = 5;
-    this.collision = false;
+    this.hit = false;
     this.win = false;
 };
 
 Player.prototype.update = function() {
-    if(this.collision === true || this.win === true) {
+    if(this.hit === true || this.win === true) {
         this.win = this.reset = false;
         this.xLocation = 2;
         this.yLocation = 5;
@@ -96,7 +96,7 @@ Player.prototype.resetLocation = function() {
 };
 
 Player.prototype.handleInput = function(key) {
-    //console.log("x: " + this.xLocation + " y: " + this.yLocation);
+    console.log("before x: " + this.xLocation + " y: " + this.yLocation);
     if(key === 'left') {
         if(this.xLocation > 0) {
             this.xLocation = this.xLocation - 1; 

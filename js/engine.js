@@ -99,7 +99,18 @@ var Engine = (function(global) {
     }
 
     function checkCollisions() {
+        allEnemies.forEach(function(enemy) {
+            if (!player.hit &&
+                Math.abs(enemy.xLocation - player.xLocation) < 0.1 
+                && Math.abs(enemy.yLocation - player.yLocation) < 0.1) {
+                player.hit = true;
+            }
+        });
 
+        if(player.hit === true) {
+            player.hit = false;
+            player.resetLocation();
+        }
     }
 
     function checkWin() {
