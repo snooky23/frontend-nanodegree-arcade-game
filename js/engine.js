@@ -23,12 +23,15 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime,
+        timeToPlay = 60,
+        playStatus = false;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+    canvas.addEventListener("mousedown", doMouseDown, false);
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -46,7 +49,8 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
         update(dt);
-        render();
+        render(dt);
+        
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -124,7 +128,7 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-    function render() {
+    function render(dt) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
@@ -157,7 +161,11 @@ var Engine = (function(global) {
             }
         }
 
-        renderEntities();
+        if (playStatus === false) { 
+            renderGameClock(dt);
+            renderEntities();
+        }
+        renderStopPlayButton();
     }
 
     /* This function is called by the render function and is called on each game
@@ -175,12 +183,49 @@ var Engine = (function(global) {
         player.render();
     }
 
+    function renderGameClock(dt) {
+        timeToPlay = (timeToPlay - dt).toFixed(2);
+        ctx.font="20px Comic Sans MS";
+        ctx.fillStyle = 'white';
+        ctx.fillText(timeToPlay,20,101);
+
+        if(timeToPlay < 0.1) {
+            playStatus = true;
+        }
+    }
+
+    function renderStopPlayButton() {
+        ctx.font="20px Comic Sans MS";
+        ctx.fillStyle = 'white';
+        ctx.fillText(playStatus === true ? 'Start' : 'End',435,101);
+    }
+
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
         // noop
+    }
+
+    /* This method is a click event methods 
+    */
+    function doMouseDown(event){
+        canvas_x = event.pageX;
+        canvas_y = event.pageY;
+
+        //check if the start or end button was pressed on the canvas
+        if (canvas_x > 720 && canvas_y < 136) {
+            handlePlayStatusEvent();
+        }
+    }
+
+    function handlePlayStatusEvent() {
+        if (playStatus === true) {
+            location.reload();
+        } else {
+            playStatus = true;
+        }
     }
 
     /* Go ahead and load all of the images we know we're going to need to
