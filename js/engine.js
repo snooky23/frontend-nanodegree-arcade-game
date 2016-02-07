@@ -169,7 +169,7 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
+        //This if state block the render of game clock and entities when the game is over
         if (playStatus === false) { 
             renderGameClock(dt);
             renderEntities();
@@ -193,23 +193,27 @@ var Engine = (function(global) {
         player.render();
     }
 
+    //present the game clock in the game
     function renderGameClock(dt) {
         timeToPlay = (timeToPlay - dt).toFixed(2);
         ctx.font="20px Comic Sans MS";
         ctx.fillStyle = 'white';
         ctx.fillText(timeToPlay,20,101);
 
+        //if the time to play is below 0.1 mark game over
         if(timeToPlay < 0.1) {
             playStatus = true;
         }
     }
 
+    //present the stop / play button on the right of the screen
     function renderStopPlayButton() {
         ctx.font="20px Comic Sans MS";
         ctx.fillStyle = 'white';
         ctx.fillText(playStatus === true ? 'Start' : 'End',435,101);
     }
 
+    //show the amount of wins or losses (a number with minuts before..)
     function renderPlayerWins() {
         ctx.font="20px Comic Sans MS";
         ctx.fillStyle = 'white';
