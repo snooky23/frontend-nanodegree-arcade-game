@@ -235,15 +235,11 @@ var Engine = (function(global) {
 
         //check if the start or end button was pressed on the canvas
         if (canvas_x > 720 && canvas_y < 136) {
-            handlePlayStatusEvent();
-        }
-    }
-
-    function handlePlayStatusEvent() {
-        if (playStatus === true) {
-            location.reload();
-        } else {
-            playStatus = true;
+            if (playStatus === true) {
+                location.reload();
+            } else {
+                playStatus = true;
+            }
         }
     }
 
