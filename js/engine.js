@@ -25,7 +25,8 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime,
         timeToPlay = 60,
-        playStatus = false;
+        playStatus = false,
+        playerWins = 0.0;
 
     canvas.width = 505;
     canvas.height = 606;
@@ -112,13 +113,19 @@ var Engine = (function(global) {
         });
 
         if(player.hit === true) {
+            playerWins = playerWins - 1;
+            console.log("Wins: " + playerWins);
             player.hit = false;
             player.resetLocation();
         }
     }
 
     function checkWin() {
+        console.log("checkWin: " + player.win);
         if(player.win === true) {
+            playerWins = playerWins + 1;
+            console.log("Wins: " + playerWins);
+            player.win = false;
             player.resetLocation();
         }
     }
@@ -165,6 +172,7 @@ var Engine = (function(global) {
             renderGameClock(dt);
             renderEntities();
         }
+        renderPlayerWins();
         renderStopPlayButton();
     }
 
@@ -200,6 +208,11 @@ var Engine = (function(global) {
         ctx.fillText(playStatus === true ? 'Start' : 'End',435,101);
     }
 
+    function renderPlayerWins() {
+        ctx.font="20px Comic Sans MS";
+        ctx.fillStyle = 'white';
+        ctx.fillText("Wins: " + playerWins,205,101);
+    }
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
