@@ -103,6 +103,9 @@ var Engine = (function(global) {
         player.update();
     }
 
+    /*This is called in order to find collisions between enemies and the player
+    * if the distance between them is less than 0.1 we consider them to hit.
+    */
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
             if (!player.hit &&
@@ -114,17 +117,16 @@ var Engine = (function(global) {
 
         if(player.hit === true) {
             playerWins = playerWins - 1;
-            console.log("Wins: " + playerWins);
             player.hit = false;
             player.resetLocation();
         }
     }
-
+    /*On this method we'll check if the player won a game
+    * Remember to check after checkCollisions
+    */ 
     function checkWin() {
-        console.log("checkWin: " + player.win);
         if(player.win === true) {
             playerWins = playerWins + 1;
-            console.log("Wins: " + playerWins);
             player.win = false;
             player.resetLocation();
         }
