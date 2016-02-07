@@ -217,7 +217,7 @@ var Engine = (function(global) {
     function renderPlayerWins() {
         ctx.font="20px Comic Sans MS";
         ctx.fillStyle = 'white';
-        ctx.fillText("Wins: " + playerWins,205,101);
+        ctx.fillText("Wins: " + playerWins,210,101);
     }
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
