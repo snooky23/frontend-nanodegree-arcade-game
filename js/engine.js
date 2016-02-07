@@ -227,8 +227,7 @@ var Engine = (function(global) {
         // noop
     }
 
-    /* This method is a click event methods 
-    */
+    // This method is a click event methods 
     function doMouseDown(event){
         canvas_x = event.pageX;
         canvas_y = event.pageY;
